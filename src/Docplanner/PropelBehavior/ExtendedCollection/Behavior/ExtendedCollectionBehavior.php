@@ -7,8 +7,8 @@
  */
 class ExtendedCollectionBehavior extends \Behavior
 {
-    protected $defaultFormatter = '\Docplanner\ExtendedCollection\Formatter\ObjectFormatter';
-    protected $defaultCollectionClass = '\Docplanner\ExtendedCollection\Collection\ObjectCollection';
+    protected $defaultFormatter = 'Docplanner\PropelBehavior\ExtendedCollection\Formatter\ObjectFormatter';
+    protected $defaultCollectionClass = 'Docplanner\PropelBehavior\ExtendedCollection\Collection\ObjectCollection';
 
     public function queryAttributes()
     {
@@ -29,7 +29,7 @@ class ExtendedCollectionBehavior extends \Behavior
         $formatter = $this->getParameter('formatter');
         $formatter = $formatter ? : $this->defaultFormatter;
 
-        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return '.$formatter.'|PropelObjectCollection', $script);
+        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return \\'.$formatter.'|PropelObjectCollection', $script);
     }
 
     public function objectFilter(&$script)
@@ -37,8 +37,8 @@ class ExtendedCollectionBehavior extends \Behavior
         $collectionClass = $this->getParameter('collection_class');
         $collectionClass = $collectionClass ? : $this->defaultCollectionClass;
 
-        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return ' . $collectionClass . '', $script);
-        $script = preg_replace('/@var\s+PropelObjectCollection\b/i', '@var ' . $collectionClass . '', $script);
-        $script = preg_replace('/new\s+PropelObjectCollection\b/i', 'new ' . $collectionClass . '', $script);
+        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return \\' . $collectionClass . '', $script);
+        $script = preg_replace('/@var\s+PropelObjectCollection\b/i', '@var \\' . $collectionClass . '', $script);
+        $script = preg_replace('/new\s+PropelObjectCollection\b/i', 'new \\' . $collectionClass . '', $script);
     }
 }
