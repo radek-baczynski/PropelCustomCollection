@@ -26,10 +26,15 @@ class ExtendedCollectionBehavior extends \Behavior
      */
     public function queryFilter(&$script)
     {
-        $formatter = $this->getParameter('formatter');
-        $formatter = $formatter ? : $this->defaultFormatter;
+        $collectionClass = $this->getParameter('collection_class');
+        $collectionClass = $collectionClass ? : $this->defaultCollectionClass;
 
-        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return \\'.$formatter.'|PropelObjectCollection', $script);
+        $magic = '(\*/[\s\n]+abstract class [A-Za-z0-9]+Query)';
+
+        $script = preg_replace($magic, '* @method \\'.$collectionClass.'|'.$this->getTable()->getPhpName().'[] find($con=null)'."\n$0", $script);
+        $script = str_replace('* @method array', '* @method \\'.$collectionClass.'|'.$this->getTable()->getPhpName()."[]", $script);
+
+        $script = preg_replace('/@return\s+PropelObjectCollection\b/i', '@return \\'.$collectionClass.'|PropelObjectCollection', $script);
     }
 
     public function objectFilter(&$script)
