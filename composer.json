@@ -1,0 +1,25 @@
+{
+    "name": "docplanner/propel-behaviors",
+    "description": "Various propel behaviors used in docplanner.com",
+    "require-dev": {
+        "propel/propel1": "1.7.*"
+    },
+    "authors": [
+        {
+            "name": "radek.baczynski",
+            "email": "radek.baczynski@gmail.com"
+        },
+        {
+            "name": "Bartłomiej Kuleszewicz",
+            "email": "bartlomiej.kuleszewicz@znanylekarz.pl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Docplanner\\PropelBehavior\\": "src/Docplanner/PropelBehavior"
+        },
+        "classmap": ["src/Docplanner/PropelBehavior/ExtendedCollection/Behavior/ExtendedCollectionBehavior.php"]
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
