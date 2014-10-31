@@ -145,18 +145,29 @@ class ObjectCollection extends \PropelObjectCollection
 		{
 			if (method_exists($element, $fieldName))
 			{
-				return $element->$fieldName() == $value;
+				$val = $element->$fieldName();
 			}
 			elseif (method_exists($element, $method = 'get' . $fieldName))
 			{
-				return $element->$method() == $value;
+				$val = $element->$method();
 			}
 			elseif ($element->hasVirtualColumn($fieldName))
 			{
-				return $element->getVirtualColumn($fieldName) == $value;
+				$val = $element->getVirtualColumn($fieldName);
+			}
+			else
+			{
+				return false;
 			}
 
-			return false;
+			if (is_array($value))
+			{
+				return in_array($val, $value);
+			}
+			else
+			{
+				return $val == $value;
+			}
 		});
 	}
 
