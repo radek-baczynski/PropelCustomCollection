@@ -12,7 +12,7 @@ namespace Docplanner\PropelBehavior\ExtendedCollection\Collection;
 class ObjectCollection extends \PropelObjectCollection
 {
 	const SORT_DESC = -1;
-	const SORT_ASC  = 1;
+	const SORT_ASC = 1;
 
 	/**
 	 * Get an associative array of objects form collection
@@ -186,9 +186,9 @@ class ObjectCollection extends \PropelObjectCollection
 	}
 
 	/**
-	 * @param string 		$keyColumn
-	 * @param bool   		$usePrefix
-	 * @param array|null   	$columnParams
+	 * @param string $keyColumn
+	 * @param bool $usePrefix
+	 * @param array|null $columnParams
 	 *
 	 * @return array
 	 */
@@ -201,12 +201,12 @@ class ObjectCollection extends \PropelObjectCollection
 			return $tmpResult;
 		}
 
-		$result = [];
+		$result          = [];
 		$keyGetterMethod = 'get' . $keyColumn;
 
 		foreach ($tmpResult as $item)
 		{
-			$key = call_user_func_array(array($item, $keyGetterMethod), $columnParams);
+			$key          = call_user_func_array(array($item, $keyGetterMethod), $columnParams);
 			$result[$key] = $item;
 		}
 
@@ -223,7 +223,7 @@ class ObjectCollection extends \PropelObjectCollection
 	{
 		$ret = new self();
 
-		foreach($this->getData() as $d)
+		foreach ($this->getData() as $d)
 		{
 			$ret->append($callback($d));
 		}
@@ -239,13 +239,26 @@ class ObjectCollection extends \PropelObjectCollection
 	 */
 	public function extractField($field)
 	{
-		return $this->extract(function($e) use ($field) {
+		return $this->extract(function ($e) use ($field)
+		{
 			return $e->$field();
 		});
 	}
 
 	public function __toString()
 	{
-		return 'ObjectCollection('.$this->count().')';
+		return 'ObjectCollection(' . $this->count() . ')';
+	}
+
+	public function toArrayJson($objectToJsonArrayMethod = 'toJson')
+	{
+		$ret = [];
+
+		foreach ($this as $object)
+		{
+			$ret[] = $object->toJson();
+		}
+
+		return $ret;
 	}
 }
